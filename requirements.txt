@@ -1,0 +1,4 @@
+streamlit
+streamlit-shadcn-ui
+plotly
+pydantic
