@@ -14,3 +14,10 @@ data/
 # IDE
 .vscode/
 .idea/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Secrets
+*.json
+*.pem

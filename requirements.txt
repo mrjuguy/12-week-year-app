@@ -2,3 +2,7 @@ streamlit
 streamlit-shadcn-ui
 plotly
 pydantic
+gspread
+google-auth
+pandas
+google-api-python-client

@@ -9,6 +9,13 @@ class BlockType(str, Enum):
     BREAKOUT = "Breakout"
     NONE = "None"
 
+class TacticStatus(str, Enum):
+    NOT_STARTED = "Not Started"
+    IN_PROGRESS = "In Progress"
+    COMPLETED = "Completed"
+    DEFERRED = "Deferred"
+    CANCELLED = "Cancelled"
+
 class MetricType(str, Enum):
     LEAD = "Lead"
     LAG = "Lag"
@@ -17,14 +24,17 @@ class Metric(BaseModel):
     id: str
     title: str
     type: MetricType
+    starting_value: float = 0.0
     target_value: float
     current_value: float = 0.0
+    unit: str = ""
+    last_updated: date = Field(default_factory=date.today)
 
 class Tactic(BaseModel):
     id: str
     title: str
     due_week: int = Field(..., ge=1, le=13)
-    status: str = "Pending"  # Pending, Complete
+    status: TacticStatus = TacticStatus.NOT_STARTED
     block_type: BlockType = BlockType.NONE
     is_completed: bool = False
 
@@ -34,10 +44,26 @@ class Goal(BaseModel):
     tactics: List[Tactic] = []
     metrics: List[Metric] = []
 
+class WeeklyReview(BaseModel):
+    week_num: int
+    score: float
+    wins: str = ""
+    lessons: str = ""
+    date_submitted: date = Field(default_factory=date.today)
+
+class StrategicBlock(BaseModel):
+    day_of_week: str # "Monday", "Tuesday", etc.
+    start_time: str # "09:00"
+    end_time: str # "12:00"
+
 class Cycle(BaseModel):
     id: str
     start_date: date
     goals: List[Goal] = []
+    reviews: List[WeeklyReview] = []
+    strategic_blocks: List[StrategicBlock] = []
+    vision_3_year: str = ""
+    vision_1_year: str = ""
     
     @property
     def end_date(self) -> date:
